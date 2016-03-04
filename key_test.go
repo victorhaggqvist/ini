@@ -370,6 +370,15 @@ func Test_Key(t *testing.T) {
 			So(hasvalue1, ShouldBeTrue)
 			So(hasvalue2, ShouldBeFalse)
 		})
+
+		Convey("Keys with escaped values", func() {
+			sec := cfg.Section("escaped")
+			value1 := sec.Key("esc").Value()
+			value2 := sec.Key("baz").Value()
+
+			So(value1, ShouldEqual, "foo#bar")
+			So(value2, ShouldEqual, "foo;bar")
+		})
 	})
 
 	Convey("Test getting and setting bad values", t, func() {

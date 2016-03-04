@@ -28,7 +28,7 @@ func Test_Section(t *testing.T) {
 		So(cfg, ShouldNotBeNil)
 
 		Convey("Get section strings", func() {
-			So(strings.Join(cfg.SectionStrings(), ","), ShouldEqual, "DEFAULT,author,package,package.sub,features,types,array,note,comments,advance")
+			So(strings.Join(cfg.SectionStrings(), ","), ShouldEqual, "DEFAULT,author,package,package.sub,features,types,array,note,comments,advance,escaped")
 		})
 
 		Convey("Delete a section", func() {

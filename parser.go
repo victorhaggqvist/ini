@@ -19,6 +19,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode"
@@ -32,6 +33,8 @@ const (
 	_TOKEN_SECTION
 	_TOKEN_KEY
 )
+
+var escapedCommentSubstitution = regexp.MustCompile(`\\([#;]+)`)
 
 type parser struct {
 	buf     *bufio.Reader
@@ -211,6 +214,10 @@ func (p *parser) readValue(in []byte) (string, error) {
 	}
 
 	i := strings.IndexAny(line, "#;")
+	if i > 0 && string(line[i-1]) == `\` {
+		line = escapedCommentSubstitution.ReplaceAllString(line, string(line[i]))
+		i = -1
+	}
 	if i > -1 {
 		p.comment.WriteString(line[i:])
 		line = strings.TrimSpace(line[:i])
